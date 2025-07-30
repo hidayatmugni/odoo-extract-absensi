@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+  <record id="action_report_absensi_fingerprint_v2" model="ir.actions.report">
+    <field name="name">Cetak Laporan Absensi</field>
+    <field name="model">gm.fingerprint_log</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">gm_hr_attendance.report_attendance_pdf_template_v2</field>
+    <field name="report_file">gm_hr_attendance.report_attendance_pdf_template_v2</field>
+    <field name="paperformat_id" ref="gm_hr_attendance.paperformat_absen_report"/>
+    <field name="print_report_name">'Laporan_Absensi.pdf'</field>
+  </record>
+</odoo>

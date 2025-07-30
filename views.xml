@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+  <!-- wizard export excel -->
+  <record id="view_export_attendance_wizard_form" model="ir.ui.view">
+    <field name="name">gm.export_attendance_wizard.form</field>
+    <field name="model">gm.export_attendance_wizard</field>
+    <field name="arch" type="xml">
+      <form string="Export Absensi">
+        <group>
+          <field name="month" />
+          <field name="year" />
+        </group>
+        <footer>
+          <button name="action_export" type="object" string="Export Excel" class="btn-primary" />
+          <button name="action_export_pdf"
+            type="object"
+            string="Export PDF"
+            class="btn-primary" />
+          <button string="Batal" class="btn-secondary" special="cancel" />
+        </footer>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_export_attendance_wizard" model="ir.actions.act_window">
+    <field name="name">Export Absensi</field>
+    <field name="res_model">gm.export_attendance_wizard</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+  </record>
+
+
+  <!-- List View untuk Fingerprint User -->
+  <record id="view_fingerprint_user_list" model="ir.ui.view">
+    <field name="name">gm.fingerprint_user.list</field>
+    <field name="model">gm.fingerprint_user</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="fingerprint_user_id" />
+        <field name="employee_id" />
+      </list>
+    </field>
+  </record>
+
+  <!-- Form View untuk Fingerprint User -->
+  <record id="view_fingerprint_user_form" model="ir.ui.view">
+    <field name="name">gm.fingerprint_user.form</field>
+    <field name="model">gm.fingerprint_user</field>
+    <field name="arch" type="xml">
+      <form>
+        <group>
+          <field name="fingerprint_user_id" />
+          <field name="employee_id" />
+        </group>
+        <footer>
+          <button name="sync_with_attendance" string="Sync with Attendance" type="object"
+            class="btn-primary" />
+          <button string="Cancel" class="btn-secondary" special="cancel" />
+        </footer>
+      </form>
+    </field>
+  </record>
+
+  <!-- Action untuk Fingerprint User -->
+  <record id="action_fingerprint_user" model="ir.actions.act_window">
+    <field name="name">Fingerprint Users</field>
+    <field name="res_model">gm.fingerprint_user</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        Create a new fingerprint user mapping.
+      </p>
+    </field>
+  </record>
+
+  <!-- List View untuk Fingerprint Log -->
+  <record id="view_fingerprint_log_tree" model="ir.ui.view">
+    <field name="name">gm.fingerprint_log.list</field>
+    <field name="model">gm.fingerprint_log</field>
+    <field name="arch" type="xml">
+      <list>
+        <header>
+          <button name="action_export_excel"
+            string="Export Excel"
+            type="object"
+            class="btn-primary"
+            context="{'default_model': 'gm.fingerprint_log'}" />
+        </header>
+        <field name="fingerprint_id" />
+        <field name="timestamp" />
+        <field name="check_type" />
+        <field name="employee_id" />
+        <field name="warning" />
+      </list>
+    </field>
+  </record>
+
+  <!-- Form View untuk Fingerprint Log -->
+  <record id="view_fingerprint_log_form" model="ir.ui.view">
+    <field name="name">gm.fingerprint_log.form</field>
+    <field name="model">gm.fingerprint_log</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <field name="fingerprint_id" />
+            <field name="timestamp" />
+            <field name="check_type" />
+            <field name="employee_id" />
+            <field name="warning" />
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- Action untuk Fingerprint Log -->
+  <record id="action_fingerprint_log" model="ir.actions.act_window">
+    <field name="name">Fingerprint Logs</field>
+    <field name="res_model">gm.fingerprint_log</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        View attendance logs generated from fingerprint data.
+      </p>
+    </field>
+  </record>
+
+
+  <!-- Form View untuk Attendance Import -->
+  <record id="view_attendance_import_form" model="ir.ui.view">
+    <field name="name">gm.attendance_import.form</field>
+    <field name="model">gm.attendance_import</field>
+    <field name="arch" type="xml">
+      <form string="Import Attendance">
+        <footer>
+          <button name="action_import_absen" string="Import Absen" type="object" class="btn-primary" />
+          <button string="Cancel" class="btn-secondary" special="cancel" />
+        </footer>
+      </form>
+    </field>
+  </record>
+
+  <!-- Action untuk Attendance Import -->
+  <record id="action_attendance_import" model="ir.actions.act_window">
+    <field name="name">Import Attendance</field>
+    <field name="res_model">gm.attendance_import</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        Import attendance data from all absen-xxx.csv files in /odoo/absen/ and generate Excel
+        report.
+      </p>
+    </field>
+  </record>
+
+  <!-- Menu untuk Attendance Import -->
+  <menuitem id="menu_gm_hr_attendance_root" name="GaleriMedika Attendance"
+    parent="hr_attendance.menu_hr_attendance_root" sequence="100" />
+    <menuitem id="menu_export_attendance" name="Export Bulanan" parent="menu_gm_hr_attendance_root"
+    action="action_export_attendance_wizard" sequence="30" />
+
+  <menuitem id="menu_attendance_import" name="Import Attendance" parent="menu_gm_hr_attendance_root"
+    action="action_attendance_import" sequence="10" />
+
+  <menuitem id="menu_fingerprint_log" name="Fingerprint Logs" parent="menu_gm_hr_attendance_root"
+    action="action_fingerprint_log" sequence="20" />
+
+  <menuitem id="menu_fingerprint_user" name="Fingerprint Users" parent="menu_gm_hr_attendance_root"
+    action="action_fingerprint_user" sequence="15" />
+
+  
+
+</odoo>

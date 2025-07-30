@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fingerprint_user,access_fingerprint.user,model_gm_fingerprint_user,base.group_user,1,1,1,1
+access_fingerprint_log_user,access_fingerprint_log user,model_gm_fingerprint_log,base.group_user,1,1,1,1
+access_attendance_import,access_attendance_import,model_gm_attendance_import,base.group_user,1,1,1,1
+access_gm_export_attendance_wizard,access_gm_export_attendance_wizard,model_gm_export_attendance_wizard,base.group_user,1,1,1,1

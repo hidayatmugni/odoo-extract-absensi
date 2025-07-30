@@ -1,0 +1,108 @@
+<odoo>
+
+  <record id="paperformat_absen_report" model="report.paperformat">
+    <field name="name">Riwayat Absensi</field>
+    <field name="default" eval="False" />
+    <field name="format">A4</field>
+    <field name="orientation">Portrait</field>
+    <field name="margin_top">15</field>
+    <field name="margin_bottom">15</field>
+    <field name="margin_left">15</field>
+    <field name="margin_right">15</field>
+    <field name="header_line" eval="False" />
+    <field name="header_spacing">20</field>
+    <field name="dpi">90</field>
+  </record>
+
+  <template id="report_attendance_pdf_template_v2">
+    <t t-call="web.html_container">
+      <t t-foreach="grouped_rows.items()" t-as="employee_data">
+        <div class="page" style="page-break-after: always; padding-top: 30px;">
+          <h2 style="text-align:center;">Absensi</h2>
+          <p style="text-align:center;">
+            <span t-esc="date_start" />
+            <span style="display:inline-block; width: 40px; text-align:center;">s/d</span>
+            <span t-esc="date_end" />
+          </p>
+
+          <table class="table" style="margin-top: 20px; width: 100%;">
+            <tr>
+              <td style="width: 20%;">Nama :</td>
+              <td>
+                <strong>
+                  <t t-esc="employee_data[0]" />
+                </strong>
+              </td>
+            </tr>
+            <tr>
+              <td>Masuk :</td>
+              <td>
+                <strong><t t-esc="len(employee_data[1])" /> Hari</strong>
+              </td>
+            </tr>
+            <tr>
+              <td>Terlambat :</td>
+              <td>
+                <strong>
+                  <t
+                    t-esc="sum(1 for r in employee_data[1] if any('Terlambat' in k for k in r['keterangan']))" />
+                  Hari </strong>
+              </td>
+            </tr>
+            <tr>
+              <td>Lembur :</td>
+              <td>
+                <strong>0 Hari</strong>
+              </td>
+            </tr>
+          </table>
+
+          <br />
+          <table class="table table-sm table-bordered"
+            style="width: 100%; border-collapse: collapse;" border="1">
+            <thead>
+              <tr style="background-color: #f0f0f0;">
+                <th style="padding: 4px;">Tanggal</th>
+                <th style="padding: 4px;">Masuk</th>
+                <th style="padding: 4px;">Pulang</th>
+                <th style="padding: 4px;">Keterangan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <t t-foreach="employee_data[1]" t-as="line">
+                <t t-set="warna" t-value="'white'" />
+                <t t-if="any('Terlambat' in k for k in line['keterangan'])">
+                  <t t-set="warna" t-value="'#f8d7da'" /> <!-- merah muda -->
+                </t>
+                <t
+                  t-if="any('Absen hanya 1x' in k or 'Pulang lebih awal' in k for k in line['keterangan']) and warna == 'white'">
+                  <t t-set="warna" t-value="'#fff3cd'" /> <!-- kuning muda -->
+                </t>
+                <t t-if="any('Tidak ada absen masuk' in k or 'Tidak ada absen pulang' in k for k in line['keterangan']) and warna == 'white'">
+                  <t t-set="warna" t-value="'#fff3cd'" /> <!-- Kuning muda -->
+                </t>
+
+                <tr t-attf-style="background-color: {{ warna }};">
+                  <td>
+                    <t t-esc="line['tanggal']" />
+                  </td>
+                  <td>
+                    <t t-esc="line['check_in']" />
+                  </td>
+                  <td>
+                    <t t-esc="line['check_out']" />
+                  </td>
+                  <td>
+                    <t t-foreach="line['keterangan']" t-as="ket" t-separator=", ">
+                      <t t-esc="ket" />
+                    </t>
+                  </td>
+                </tr>
+              </t>
+            </tbody>
+          </table>
+        </div>
+      </t>
+    </t>
+  </template>
+</odoo>
